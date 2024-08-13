@@ -58,7 +58,7 @@ jobs:
       - name: Run tests
         run: |
           chmod +x ./gradlew
-          export ALLURE_LAUNCH_NAME="${{ github.workflow }} - #${{ github.run_number }}"
+          export ALLURE_LAUNCH_NAME="Test Run - GitHub - #${{ github.run_number }}"
           allurectl watch -- ./gradlew clean test
         env:
           ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
@@ -69,3 +69,4 @@ jobs:
           ENDPOINT: ${{ github.event.inputs.ENDPOINT }}
           OS: ${{ github.event.inputs.OS }}
           VERSION: ${{ github.event.inputs.VERSION }}
+#export ALLURE_LAUNCH_NAME="${{ github.workflow }} - #${{ github.run_number }}"
