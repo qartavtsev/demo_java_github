@@ -1,0 +1,73 @@
+name: ATO
+
+on:
+  workflow_dispatch:
+    inputs:
+      ALLURE_USERNAME:
+        description: ALLURE_USERNAME - service parameter [Leave blank]
+        required: false
+      ALLURE_JOB_RUN_ID:
+        description: ALLURE_JOB_RUN_ID - service parameter [Leave blank]
+        required: false
+      BRANCH:
+        required: true
+        default: master
+      BROWSER:
+        required: true
+        default: Chrome
+      ENDPOINT:
+        required: true
+        default: https://demo.testops.cloud
+      OS:
+        required: true
+        default: macOS
+      VERSION:
+        required: true
+        default: 5.8.0
+      ALLURECTL:
+        required: true
+        default: 2.15.1
+        #https://github.com/allure-framework/allurectl/releases
+
+env:
+  ALLURE_ENDPOINT: https://demo.testops.cloud/
+  ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
+  ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
+  ALLURE_PROJECT_ID: 2820
+  ALLURE_RESULTS: "build/allure-results"
+  ALLURE_TESTPLAN_PATH: "./testplan.json"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+                 
+      - name: Install allurectl
+        uses: allure-framework/setup-allurectl@v1.0.0
+        with:
+          ALLURE_ENDPOINT: https://sandbox.testops.cloud/
+          ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
+          ALLURE_PROJECT_ID: ${{ github.event.inputs.ALLURE_PROJECT_ID}}
+          ALLURECTL_VERSION: ${{ github.event.inputs.ALLURECTL }}
+          
+      - name: Run tests
+        run: |
+          chmod +x ./gradlew 
+          allurectl watch -- ./gradlew clean test
+        env:
+          ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
+          ALLURE_RESULTS: "build/allure-results"
+          ALLURE_TESTPLAN_PATH: "./testplan.json"
+          BRANCH: ${{ github.event.inputs.BRANCH }}
+          BROWSER: ${{ github.event.inputs.BROWSER }}
+          ENDPOINT: ${{ github.event.inputs.ENDPOINT }}
+          OS: ${{ github.event.inputs.OS }}
+          VERSION: ${{ github.event.inputs.VERSION }}
