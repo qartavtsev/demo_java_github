@@ -9,9 +9,6 @@ on:
       ALLURE_JOB_RUN_ID:
         description: ALLURE_JOB_RUN_ID - service parameter [Leave blank]
         required: false
-      BRANCH:
-        required: true
-        default: master
       BROWSER:
         required: true
         default: Chrome
@@ -66,7 +63,7 @@ jobs:
           ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
           ALLURE_RESULTS: "build/allure-results"
           ALLURE_TESTPLAN_PATH: "./testplan.json"
-          BRANCH: ${{ github.event.inputs.BRANCH }}
+          BRANCH: ${{ github.ref_name }}
           BROWSER: ${{ github.event.inputs.BROWSER }}
           ENDPOINT: ${{ github.event.inputs.ENDPOINT }}
           OS: ${{ github.event.inputs.OS }}
