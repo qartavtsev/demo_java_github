@@ -48,12 +48,12 @@ jobs:
           cache: 'gradle'
                  
       - name: Install allurectl
-        uses: allure-framework/setup-allurectl@v1.0.0
+        uses: allure-framework/setup-allurectl@v1
         with:
-          ALLURE_ENDPOINT: https://sandbox.testops.cloud/
-          ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
-          ALLURE_PROJECT_ID: ${{ github.event.inputs.ALLURE_PROJECT_ID}}
-          ALLURECTL_VERSION: ${{ github.event.inputs.ALLURECTL }}
+          allure-endpoint: https://demo.testops.cloud/
+          allure-token: ${{ secrets.ALLURE_TOKEN }}
+          allure-project-id: ${{ github.event.inputs.ALLURE_PROJECT_ID}}
+          allurectl-version: ${{ github.event.inputs.ALLURECTL }}
           
       - name: Run tests
         run: |
