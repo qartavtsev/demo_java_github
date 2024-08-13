@@ -57,7 +57,8 @@ jobs:
           
       - name: Run tests
         run: |
-          chmod +x ./gradlew 
+          chmod +x ./gradlew
+          export ALLURE_LAUNCH_NAME=123
           allurectl watch -- ./gradlew clean test
         env:
           ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
